@@ -290,11 +290,11 @@ class HistoryLinkManager(object):
         """Returns the current URL for whatever used to exist at the given path."""
         # Get the history links.
         try:
-            history_link = HistoryLink.objects.get(path=path)
+            history_link = HistoryLink.objects.get(permalink=path)
         except HistoryLink.DoesNotExist:
             return None
         # Resolve the object.
-        model = ContentType.objects.get_for_id(id=history_link.content_type_id)
+        model = ContentType.objects.get_for_id(id=history_link.content_type_id).model_class()
         try:
             obj = model._default_manager.get(pk=history_link.object_id)
         except model.DoesNotExist:

@@ -9,7 +9,7 @@ class HistoryLink(models.Model):
     
     """A link to a moved / deleted model."""
     
-    permalink_method = models.CharField(
+    permalink_name = models.CharField(
         max_length = 255,
     )
     

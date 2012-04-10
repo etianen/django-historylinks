@@ -11,7 +11,7 @@ class Migration(SchemaMigration):
         # Adding model 'HistoryLink'
         db.create_table('historylinks_historylink', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('permalink_method', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('permalink_name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('permalink', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
             ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
             ('object_id', self.gf('django.db.models.fields.TextField')()),
@@ -36,7 +36,7 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'object_id': ('django.db.models.fields.TextField', [], {}),
             'permalink': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'permalink_method': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+            'permalink_name': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         }
     }
 

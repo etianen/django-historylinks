@@ -261,7 +261,7 @@ class HistoryLinkManager(object):
         for permalink_name, permalink_value in adapter.get_permalinks(obj).iteritems():
             history_link_data = {
                 "permalink": permalink_value,
-                "permalink_method": permalink_name,
+                "permalink_name": permalink_name,
                 "object_id": object_id,
                 "content_type": content_type,
             }
@@ -293,22 +293,22 @@ class HistoryLinkManager(object):
             history_link = HistoryLink.objects.get(permalink=path)
         except HistoryLink.DoesNotExist:
             return None
-        # Resolve the object.
+        # Resolve the model.
         model = ContentType.objects.get_for_id(id=history_link.content_type_id).model_class()
+        # Resolve the adapter.
+        try:
+            adapter = self.get_adapter(model)
+        except RegistrationError:
+            return None
+        # Resolve the object.
         try:
             obj = model._default_manager.get(pk=history_link.object_id)
         except model.DoesNotExist:
             return None
-        # Resolve the method.
-        try:
-            permalink_method = getattr(obj, history_link.permalink_method)
-        except AttributeError:
-            return None
-        # Get the permalink.
-        if not callable(permalink_method):
-            return None
-        permalink = permalink_method()
-        return permalink
+        # Resolve the permalinks.
+        permalinks = adapter.get_permalinks(obj)
+        # Resolve the specific permalink.
+        return permalinks.get(history_link.permalink_name, None)
 
 
 # The default history link manager.

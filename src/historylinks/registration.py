@@ -258,7 +258,7 @@ class HistoryLinkManager(object):
         content_type = ContentType.objects.get_for_model(model)
         object_id = unicode(obj.pk)
         # Create the history link data.
-        for permalink_name, permalink_value in adapter.get_permalinks(obj):
+        for permalink_name, permalink_value in adapter.get_permalinks(obj).iteritems():
             history_link_data = {
                 "permalink": permalink_value,
                 "permalink_method": permalink_name,

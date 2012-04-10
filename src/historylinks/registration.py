@@ -5,16 +5,9 @@ from itertools import chain
 from threading import local
 from functools import wraps
 
-from django.conf import settings
 from django.core.signals import request_finished
-from django.core.exceptions import ImproperlyConfigured
 from django.contrib.contenttypes.models import ContentType
-from django.db import models
-from django.db.models import Q
-from django.db.models.query import QuerySet
-from django.db.models.signals import post_save, pre_delete
-from django.utils.importlib import import_module
-from django.utils import simplejson as json
+from django.db.models.signals import post_save
 
 from historylinks.models import HistoryLink
 

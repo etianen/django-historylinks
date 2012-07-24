@@ -1,7 +1,7 @@
 django-historylinks
 ===================
 
-**django-historylinks** provides an automatic SEO-friendly HTTP 301 redirect if the
+**django-historylinks** provides automatic SEO-friendly HTTP 301 redirects if the
 URL of a registered model changes.
 
 

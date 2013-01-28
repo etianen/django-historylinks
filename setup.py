@@ -3,13 +3,12 @@ from distutils.core import setup
 
 setup(
     name = "django-historylinks",
-    version = "1.0.0",
+    version = "1.0.1",
     description = "Automatic SEO-friendly HTTP 301 redirects if the URL of a Django model changes.",
     long_description = open("README.md").read(),
     author = "Dave Hall",
     author_email = "dave@etianen.com",
     url = "http://github.com/etianen/django-historylinks",
-    download_url = "http://github.com/downloads/etianen/django-historylinks/django-historylinks-1.0.0.tar.gz",
     zip_safe = False,
     packages = [
         "historylinks",

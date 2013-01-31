@@ -1,7 +1,7 @@
 """Middleware used by the history links service."""
 
 from django.shortcuts import redirect
-from django.views.decorators.cache import never_cache
+from django.utils.cache import add_never_cache_headers
 
 from historylinks.registration import history_link_context_manager, default_history_link_manager
 
@@ -32,7 +32,9 @@ class HistoryLinkFallbackMiddleware(object):
         if response.status_code == 404:
             redirect_url = default_history_link_manager.get_current_url(request.path)
             if redirect_url and redirect_url != request.path:
-                return never_cache(redirect(redirect_url, permanent=True))
+                response = redirect(redirect_url, permanent=True)
+                add_never_cache_headers(response)
+                return response
         # Return the original response.
         return response
         

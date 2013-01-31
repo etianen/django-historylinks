@@ -2,6 +2,12 @@ django-historylinks changelog
 ============================
 
 
+1.0.2 - 31/01/2013
+------------------
+
+* Bugfix release - fixing an issue that prevented the HistoryLinkFallbackMiddleware from returning a redirect response.
+
+
 1.0.1 - 28/01/2013
 ------------------
 

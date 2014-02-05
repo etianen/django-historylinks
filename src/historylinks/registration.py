@@ -277,12 +277,13 @@ class HistoryLinkManager(object):
         
     # Signalling hooks.
             
-    def _post_save_receiver(self, instance, **kwargs):
+    def _post_save_receiver(self, instance, raw=False, **kwargs):
         """Signal handler for when a registered model has been saved."""
-        if self._history_link_context_manager.is_active():
-            self._history_link_context_manager.add_to_context(self, instance)
-        else:
-            self.update_obj_history_links(instance)
+        if not raw:
+            if self._history_link_context_manager.is_active():
+                self._history_link_context_manager.add_to_context(self, instance)
+            else:
+                self.update_obj_history_links(instance)
             
     # Accessing current URLs.
     

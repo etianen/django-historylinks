@@ -1,5 +1,11 @@
 django-historylinks changelog
-============================
+=============================
+
+
+1.0.3 - 05/02/2014
+------------------
+
+* historylinks not updated on fixture loading, fixing issues with multi-table inheritance.
 
 
 1.0.2 - 31/01/2013

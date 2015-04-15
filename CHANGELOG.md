@@ -2,6 +2,12 @@ django-historylinks changelog
 =============================
 
 
+1.0.4 - 15/04/2015
+------------------
+
+* Added Django 1.7 migrations (@jamesfoley).
+
+
 1.0.3 - 05/02/2014
 ------------------
 

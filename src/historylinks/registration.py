@@ -1,4 +1,5 @@
 """Adapters for registering models with django-HistoryLinks."""
+from __future__ import unicode_literals
 
 import sys
 from itertools import chain
@@ -8,6 +9,7 @@ from functools import wraps
 from django.core.signals import request_finished
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
+from django.utils import six
 
 from historylinks.models import HistoryLink
 
@@ -256,9 +258,9 @@ class HistoryLinkManager(object):
         model = obj.__class__
         adapter = self.get_adapter(model)
         content_type = ContentType.objects.get_for_model(model)
-        object_id = unicode(obj.pk)
+        object_id = six.text_type(obj.pk)
         # Create the history link data.
-        for permalink_name, permalink_value in adapter.get_permalinks(obj).iteritems():
+        for permalink_name, permalink_value in six.iteritems(adapter.get_permalinks(obj)):
             history_link_data = {
                 "permalink": permalink_value,
                 "permalink_name": permalink_name,

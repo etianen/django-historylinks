@@ -20,14 +20,14 @@ class HistoryLinkAdapterError(Exception):
 class HistoryLinkAdapter(object):
 
     """An adapter for generating HistoryLinks for a model."""
-    
+
     # Use to specify the methods that should be used to generate permalinks.
     permalink_methods = ()
-    
+
     def __init__(self, model):
         """Initializes the history link adapter."""
         self.model = model
-    
+
     def get_permalinks(self, obj):
         """Returns a dictionary of permalinks for the given obj."""
         permalink_methods = self.permalink_methods or ("get_absolute_url",)
@@ -38,14 +38,14 @@ class HistoryLinkAdapter(object):
                 permalink_method = getattr(obj, permalink_method_name)
             except AttributeError:
                 raise HistoryLinkAdapterError("Could not find a method called {name!r} on {obj!r}".format(
-                    name = permalink_method_name,
-                    obj = obj,
+                    name=permalink_method_name,
+                    obj=obj,
                 ))
             # Get the permalink.
             if not callable(permalink_method):
                 raise HistoryLinkAdapterError("{model}.{method} is not a callable method".format(
-                    model = self.model.__name__,
-                    method = permalink_method_name,
+                    model=self.model.__name__,
+                    method=permalink_method_name,
                 ))
             permalink = permalink_method()
             permalinks[permalink_method_name] = permalink
@@ -56,10 +56,10 @@ class HistoryLinkAdapter(object):
 class RegistrationError(Exception):
 
     """Something went wrong when registering a model with a history link manager."""
-    
-    
+
+
 class HistoryLinkContextError(Exception):
-    
+
     """Something went wrong with the HistoryLink context management."""
 
 
@@ -76,44 +76,44 @@ def _bulk_save_history_links(history_links):
 class HistoryLinkContextManager(local):
 
     """A thread-local context manager used to manage saving history link data."""
-    
+
     def __init__(self):
         """Initializes the history link context."""
         self._stack = []
         # Connect to the signalling framework.
         request_finished.connect(self._request_finished_receiver)
-    
+
     def is_active(self):
         """Checks that this history link context is active."""
         return bool(self._stack)
-    
+
     def _assert_active(self):
         """Ensures that the history link is active."""
         if not self.is_active():
             raise HistoryLinkContextError("The history link context is not active.")
-        
+
     def start(self):
         """Starts a level in the history link context."""
         self._stack.append((set(), False))
-    
+
     def add_to_context(self, manager, obj):
         """Adds an object to the current context, if active."""
         self._assert_active()
         objects, _ = self._stack[-1]
         objects.add((manager, obj))
-    
+
     def invalidate(self):
         """Marks this history link context as broken, so should not be commited."""
         self._assert_active()
         objects, _ = self._stack[-1]
         self._stack[-1] = (objects, True)
-        
+
     def is_invalid(self):
         """Checks whether this history link context is invalid."""
         self._assert_active()
         _, is_invalid = self._stack[-1]
         return is_invalid
-    
+
     def end(self):
         """Ends a level in the history link context."""
         self._assert_active()
@@ -121,19 +121,19 @@ class HistoryLinkContextManager(local):
         tasks, is_invalid = self._stack.pop()
         if not is_invalid:
             _bulk_save_history_links(list(chain.from_iterable(manager._update_obj_history_links_iter(obj) for manager, obj in tasks)))
-    
+
     # Context management.
-            
+
     def update_history_links(self):
         """
         Marks up a block of code as requiring the history links to be updated.
-        
+
         The returned context manager can also be used as a decorator.
         """
         return HistoryLinkContext(self)
-    
+
     # Signalling hooks.
-        
+
     def _request_finished_receiver(self, **kwargs):
         """
         Called at the end of a request, ensuring that any open contexts
@@ -142,8 +142,8 @@ class HistoryLinkContextManager(local):
         """
         while self.is_active():
             self.end()
-            
-            
+
+
 class HistoryLinkContext(object):
 
     """An individual context for a history link update."""
@@ -151,11 +151,11 @@ class HistoryLinkContext(object):
     def __init__(self, context_manager):
         """Initializes the history link context."""
         self._context_manager = context_manager
-    
+
     def __enter__(self):
         """Enters a block of history link management."""
         self._context_manager.start()
-        
+
     def __exit__(self, exc_type, exc_value, traceback):
         """Leaves a block of history link management."""
         try:
@@ -163,7 +163,7 @@ class HistoryLinkContext(object):
                 self._context_manager.invalidate()
         finally:
             self._context_manager.end()
-        
+
     def __call__(self, func):
         """Allows this history link context to be used as a decorator."""
         @wraps(func)
@@ -180,8 +180,8 @@ class HistoryLinkContext(object):
                 if not exception:
                     self.__exit__(None, None, None)
         return do_history_link_context
-        
-            
+
+
 # The shared, thread-safe history link context manager.
 history_link_context_manager = HistoryLinkContextManager()
 
@@ -189,7 +189,7 @@ history_link_context_manager = HistoryLinkContextManager()
 class HistoryLinkManager(object):
 
     """A history link manager."""
-    
+
     def __init__(self, history_link_context_manager=history_link_context_manager):
         """Initializes the history link manager."""
         # Initialize the manager.
@@ -204,14 +204,14 @@ class HistoryLinkManager(object):
     def register(self, model, adapter_cls=HistoryLinkAdapter, **field_overrides):
         """
         Registers the given model with this history link manager.
-        
+
         If the given model is already registered with this history link manager, a
         RegistrationError will be raised.
         """
         # Check for existing registration.
         if self.is_registered(model):
             raise RegistrationError("{model!r} is already registered with this history link manager".format(
-                model = model,
+                model=model,
             ))
         # Perform any customization.
         if field_overrides:
@@ -221,36 +221,36 @@ class HistoryLinkManager(object):
         self._registered_models[model] = adapter_obj
         # Connect to the signalling framework.
         post_save.connect(self._post_save_receiver, model)
-    
+
     def unregister(self, model):
         """
         Unregisters the given model with this history link manager.
-        
+
         If the given model is not registered with this history link manager, a RegistrationError
         will be raised.
         """
         # Check for registration.
         if not self.is_registered(model):
             raise RegistrationError("{model!r} is not registered with this history link manager".format(
-                model = model,
+                model=model,
             ))
         # Perform the unregistration.
         del self._registered_models[model]
         # Disconnect from the signalling framework.
         post_save.disconnect(self._post_save_receiver, model)
-        
+
     def get_registered_models(self):
         """Returns a sequence of models that have been registered with this history link manager."""
         return self._registered_models.keys()
-    
+
     def get_adapter(self, model):
         """Returns the adapter associated with the given model."""
         if self.is_registered(model):
             return self._registered_models[model]
         raise RegistrationError("{model!r} is not registered with this history link manager".format(
-            model = model,
+            model=model,
         ))
-    
+
     def _update_obj_history_links_iter(self, obj):
         """Either updates the given object's history links, or yields one or more unsaved history links."""
         model = obj.__class__
@@ -266,17 +266,17 @@ class HistoryLinkManager(object):
                 "content_type": content_type,
             }
             update_count = HistoryLink.objects.filter(
-                permalink = permalink_value,
+                permalink=permalink_value,
             ).update(**history_link_data)
             if update_count == 0:
                 yield HistoryLink(**history_link_data)
-    
+
     def update_obj_history_links(self, obj):
         """Updates the history links for the given obj."""
         _bulk_save_history_links(list(self._update_obj_history_links_iter(obj)))
-        
+
     # Signalling hooks.
-            
+
     def _post_save_receiver(self, instance, raw=False, **kwargs):
         """Signal handler for when a registered model has been saved."""
         if not raw:
@@ -284,9 +284,9 @@ class HistoryLinkManager(object):
                 self._history_link_context_manager.add_to_context(self, instance)
             else:
                 self.update_obj_history_links(instance)
-            
+
     # Accessing current URLs.
-    
+
     def get_current_url(self, path):
         """Returns the current URL for whatever used to exist at the given path."""
         # Get the history links.

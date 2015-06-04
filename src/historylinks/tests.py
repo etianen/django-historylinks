@@ -6,20 +6,20 @@ from historylinks.registration import RegistrationError
 
 
 class HistoryLinkTestModel(models.Model):
-    
+
     slug = models.SlugField(
-        unique = True,
+        unique=True,
     )
-    
+
     def get_absolute_url(self):
         return u"/{slug}/".format(slug=self.slug)
-    
+
     class Meta:
         app_label = "auth"  # Hack: Cannot use an app_label that is under South control, due to http://south.aeracode.org/ticket/520
 
 
 class RegistrationTest(TestCase):
-    
+
     def testRegistration(self):
         # Register the model and test.
         historylinks.register(HistoryLinkTestModel)
@@ -33,16 +33,16 @@ class RegistrationTest(TestCase):
         self.assertRaises(RegistrationError, lambda: historylinks.unregister(HistoryLinkTestModel))
         self.assertTrue(HistoryLinkTestModel not in historylinks.get_registered_models())
         self.assertRaises(RegistrationError, lambda: isinstance(historylinks.get_adapter(HistoryLinkTestModel)))
-        
-        
+
+
 class HistoryLinkRedirectTest(TestCase):
-    
+
     def setUp(self):
         historylinks.register(HistoryLinkTestModel)
         self.obj = HistoryLinkTestModel.objects.create(slug="foo")
         self.obj.slug = "bar"
         self.obj.save()
-        
+
     def testRedirectsToNewURL(self):
         # Try a redirect.
         response = self.client.get("/foo/")
@@ -51,6 +51,6 @@ class HistoryLinkRedirectTest(TestCase):
         # Try a 404.
         response = self.client.get("/baz/")
         self.assertEqual(response.status_code, 404)
-        
+
     def tearDown(self):
         historylinks.unregister(HistoryLinkTestModel)

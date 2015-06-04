@@ -10,20 +10,20 @@ HISTORYLINK_MIDDLEWARE_FLAG = "historylinks.history_link_fallback_middleware_act
 
 
 class HistoryLinkFallbackMiddleware(object):
-    
+
     """Middleware that attempts to rescue 404 responses with a redirect to it's new location."""
-    
+
     def process_request(self, request):
         """Starts a new history link context."""
         request.META[(HISTORYLINK_MIDDLEWARE_FLAG, self)] = True
         history_link_context_manager.start()
-    
+
     def _close_history_link_context(self, request):
         """Closes the history link context."""
         if request.META.get((HISTORYLINK_MIDDLEWARE_FLAG, self), False):
             del request.META[(HISTORYLINK_MIDDLEWARE_FLAG, self)]
             history_link_context_manager.end()
-    
+
     def process_response(self, request, response):
         """Attempts to rescue 404 responses and closes the history link context."""
         # Close the history link context.
@@ -37,8 +37,8 @@ class HistoryLinkFallbackMiddleware(object):
                 return response
         # Return the original response.
         return response
-        
+
     def process_exception(self, request, exception):
         """Closes the history link context."""
-        history_link_context_manager.invalidate()    
+        history_link_context_manager.invalidate()
         self._close_history_link_context(request)

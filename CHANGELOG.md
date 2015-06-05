@@ -2,6 +2,12 @@ django-historylinks changelog
 =============================
 
 
+1.0.5 - 05/06/2015
+------------------
+
+* Added Python 3 compatibility (@danielsamuels).
+
+
 1.0.4 - 15/04/2015
 ------------------
 

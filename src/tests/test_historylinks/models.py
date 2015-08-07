@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.db import models
 
 
@@ -8,4 +10,4 @@ class HistoryLinkTestModel(models.Model):
     )
 
     def get_absolute_url(self):
-        return u"/{slug}/".format(slug=self.slug)
+        return "/{slug}/".format(slug=self.slug)

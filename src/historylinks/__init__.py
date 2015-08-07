@@ -1,4 +1,5 @@
 """Model permalink history services."""
+from __future__ import unicode_literals
 
 
 from historylinks.registration import HistoryLinkAdapter, history_link_context_manager, default_history_link_manager

@@ -2,6 +2,12 @@ django-historylinks changelog
 =============================
 
 
+1.0.6 - 06/08/2015
+------------------
+
+* Added Django 1.8 compatibility (@etianen).
+
+
 1.0.5 - 05/06/2015
 ------------------
 

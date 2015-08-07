@@ -19,6 +19,14 @@ setup(
     package_dir = {
         "": "src",
     },
+    install_requires = [
+        "django>=1.7",
+    ],
+    extras_require = {
+        "test": [
+            "coverage",
+        ],
+    },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",

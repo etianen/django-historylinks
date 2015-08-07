@@ -1,21 +1,8 @@
-from django.db import models
 from django.test import TestCase
 
 import historylinks
 from historylinks.registration import RegistrationError
-
-
-class HistoryLinkTestModel(models.Model):
-
-    slug = models.SlugField(
-        unique=True,
-    )
-
-    def get_absolute_url(self):
-        return u"/{slug}/".format(slug=self.slug)
-
-    class Meta:
-        app_label = "auth"  # Hack: Cannot use an app_label that is under South control, due to http://south.aeracode.org/ticket/520
+from test_historylinks.models import HistoryLinkTestModel
 
 
 class RegistrationTest(TestCase):

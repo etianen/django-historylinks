@@ -10,7 +10,7 @@ class Command(NoArgsCommand):
 
     help = "Builds the history links for all registered models."
 
-    @transaction.commit_on_success
+    @transaction.atomic()
     def handle_noargs(self, **options):
         verbosity = int(options.get("verbosity", 1))
         link_count = 0

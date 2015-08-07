@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.generic import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 
@@ -30,3 +30,6 @@ class HistoryLink(models.Model):
     def __str__(self):
         """Returns a unicode representation."""
         return self.permalink
+
+    class Meta:
+        app_label = "historylinks"

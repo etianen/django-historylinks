@@ -224,6 +224,8 @@ class HistoryLinkManager(object):
         self._registered_models[model] = adapter_obj
         # Connect to the signalling framework.
         post_save.connect(self._post_save_receiver, model)
+        # Return the model, allowing this to be used as a class decorator.
+        return model
 
     def unregister(self, model):
         """

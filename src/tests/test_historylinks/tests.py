@@ -34,7 +34,7 @@ class HistoryLinkRedirectTest(TestCase):
         # Try a redirect.
         response = self.client.get("/foo/")
         self.assertEqual(response.status_code, 301)
-        self.assertEqual(response["Location"], "http://testserver/bar/")
+        self.assertEqual(response["Location"].replace("http://testserver", ""), "/bar/")
         # Try a 404.
         response = self.client.get("/baz/")
         self.assertEqual(response.status_code, 404)

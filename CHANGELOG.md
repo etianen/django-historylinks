@@ -1,6 +1,32 @@
 django-historylinks changelog
 =============================
 
+1.1.0 - 14/12/2015
+------------------
+
+* Added Django 1.9 compatibility (@etianen).
+* **Breaking:** Updated the location of [registration](https://github.com/etianen/django-historylinks/wiki/Registering-models) methods.
+    Prior to this change, you could access the these methjods using the following import:
+
+    ```py
+    # Old-style import for accessing the registration methods.
+    import historylinks
+
+    # Use register methods from the historylinks namespace.
+    historylinks.register(YourModel)
+    ```
+
+    In order to support Django 1.9, the registration
+    methods have been moved to the following import:
+
+    ```py
+    # New-style import for accesssing the registration methods.
+    from historylinks import shortcuts as historylinks
+
+    # Use register methods from the historylinks namespace.
+    historylinks.register(YourModel)
+    ```
+
 
 1.0.6 - 06/08/2015
 ------------------

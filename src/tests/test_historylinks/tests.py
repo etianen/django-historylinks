@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-import historylinks
+from historylinks import shortcuts as historylinks
 from historylinks.registration import RegistrationError
 from test_historylinks.models import HistoryLinkTestModel
 

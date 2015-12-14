@@ -11,3 +11,4 @@ Thumbs.db
 /dist
 *.egg-info
 *.sqlite3
+.coverage

@@ -3,7 +3,10 @@ from __future__ import unicode_literals
 
 from django.shortcuts import redirect
 from django.utils.cache import add_never_cache_headers
-from django.utils.deprecation import MiddlewareMixin
+try:
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:
+    MiddlewareMixin = object
 
 from historylinks.registration import history_link_context_manager, default_history_link_manager
 

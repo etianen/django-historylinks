@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import redirect
 from django.utils.cache import add_never_cache_headers
+from django.utils.deprecation import MiddlewareMixin
 
 from historylinks.registration import history_link_context_manager, default_history_link_manager
 
@@ -10,7 +11,7 @@ from historylinks.registration import history_link_context_manager, default_hist
 HISTORYLINK_MIDDLEWARE_FLAG = "historylinks.history_link_fallback_middleware_active"
 
 
-class HistoryLinkFallbackMiddleware(object):
+class HistoryLinkFallbackMiddleware(MiddlewareMixin):
 
     """Middleware that attempts to rescue 404 responses with a redirect to it's new location."""
 

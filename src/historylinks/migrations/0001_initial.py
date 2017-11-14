@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('permalink_name', models.CharField(max_length=255)),
                 ('permalink', models.CharField(unique=True, max_length=255)),
                 ('object_id', models.TextField()),
-                ('content_type', models.ForeignKey(to='contenttypes.ContentType')),
+                ('content_type', models.ForeignKey(to='contenttypes.ContentType', on_delete=models.CASCADE)),
             ],
             options={
             },

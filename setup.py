@@ -20,7 +20,7 @@ setup(
         "": "src",
     },
     install_requires = [
-        "django>=1.7",
+        "django>=3.2",
     ],
     extras_require = {
         "test": [

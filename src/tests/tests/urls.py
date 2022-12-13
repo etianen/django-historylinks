@@ -16,6 +16,9 @@ Including another URLconf
 from django.urls import path
 from django.contrib import admin
 
+from tests.views import raise_exception
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('raise-exception/', raise_exception, name='raise_exception')
 ]

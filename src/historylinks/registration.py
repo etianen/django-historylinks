@@ -9,8 +9,7 @@ from functools import wraps
 from django.core.signals import request_finished
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
-from django.utils import six
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 from historylinks.models import HistoryLink
 
@@ -261,9 +260,9 @@ class HistoryLinkManager(object):
         model = obj.__class__
         adapter = self.get_adapter(model)
         content_type = ContentType.objects.get_for_model(model)
-        object_id = force_text(obj.pk)
+        object_id = force_str(obj.pk)
         # Create the history link data.
-        for permalink_name, permalink_value in six.iteritems(adapter.get_permalinks(obj)):
+        for permalink_name, permalink_value in adapter.get_permalinks(obj).items():
             history_link_data = {
                 "permalink": permalink_value,
                 "permalink_name": permalink_name,

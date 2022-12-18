@@ -1,13 +1,9 @@
 """Models used by django-historylinks."""
-from __future__ import unicode_literals
-
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 
 
-@python_2_unicode_compatible
 class HistoryLink(models.Model):
 
     """A link to a moved / deleted model."""

@@ -1,26 +1,17 @@
 language: python
 sudo: false
 python:
-  - 2.7
-  - 3.5
-  - 3.6
+  - 3.8
+  - 3.9
+  - 3.10
 cache:
   directories:
     - $HOME/.cache/pip
 env:
-  - DJANGO=django==1.8.19
-  - DJANGO=django==1.9.13
-  - DJANGO=django==1.10.8
-  - DJANGO=django==1.11.18
-  - DJANGO=django==2.0.10
-  - DJANGO=django==2.1.5
+  - DJANGO=django==3.2.16
+  - DJANGO=django==4.1.4
 matrix:
   fast_finish: true
-  exclude:
-    - python: 2.7
-      env: DJANGO=django==2.0.10
-    - python: 2.7
-      env: DJANGO=django==2.1.5
 install:
   - travis_retry pip install $DJANGO
   - pip install -e .[test]

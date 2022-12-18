@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.urls import reverse
 
 from historylinks import shortcuts as historylinks
 from historylinks.registration import RegistrationError
@@ -30,11 +31,17 @@ class HistoryLinkRedirectTest(TestCase):
         self.obj.slug = "bar"
         self.obj.save()
 
+    def testRaisesException(self):
+        # Ensure coverage of handle_exception in the middleware.
+        with self.assertRaises(AssertionError) as e:
+            self.client.get(reverse('raise_exception'))
+        self.assertEqual(str(e.exception), 'historylinks test')
+
     def testRedirectsToNewURL(self):
         # Try a redirect.
         response = self.client.get("/foo/")
         self.assertEqual(response.status_code, 301)
-        self.assertEqual(response["Location"].replace("http://testserver", ""), "/bar/")
+        self.assertEqual(response["Location"], "/bar/")
         # Try a 404.
         response = self.client.get("/baz/")
         self.assertEqual(response.status_code, 404)

@@ -1,6 +1,12 @@
 django-historylinks changelog
 =============================
 
+1.1.2 - 18/12/2022
+------------------
+
+* Django 3.2 compatibility (@lewiscollard).
+
+
 1.1.1 - 14/11/2017
 ------------------
 

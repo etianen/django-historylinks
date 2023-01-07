@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
     name = "django-historylinks",
-    version = "1.1.2",
+    version = "1.1.3",
     description = "Automatic SEO-friendly HTTP 301 redirects if the URL of a Django model changes.",
     long_description = open("README.md").read(),
     author = "Dave Hall",

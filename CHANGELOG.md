@@ -1,6 +1,12 @@
 django-historylinks changelog
 =============================
 
+1.1.3 - 07/01/2023
+------------------
+
+* Fixing `buildhistorylinks` management command for Django 3.2 (@lewiscollard).
+
+
 1.1.2 - 18/12/2022
 ------------------
 

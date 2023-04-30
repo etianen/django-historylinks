@@ -1,6 +1,12 @@
 django-historylinks changelog
 =============================
 
+1.1.4 - 30/04/2023
+------------------
+
+* Fix `HistoryLinkFallbackMiddleware` on Django 4.2 (@lewiscollard).
+
+
 1.1.3 - 07/01/2023
 ------------------
 

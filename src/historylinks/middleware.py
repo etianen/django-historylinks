@@ -7,8 +7,7 @@ from django.utils.deprecation import MiddlewareMixin
 
 from historylinks.registration import history_link_context_manager, default_history_link_manager
 
-
-HISTORYLINK_MIDDLEWARE_FLAG = "historylinks.history_link_fallback_middleware_active"
+HISTORYLINK_MIDDLEWARE_FLAG = "_history_link_fallback_middleware_active"
 
 
 class HistoryLinkFallbackMiddleware(MiddlewareMixin):
@@ -17,13 +16,13 @@ class HistoryLinkFallbackMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
         """Starts a new history link context."""
-        request.META[(HISTORYLINK_MIDDLEWARE_FLAG, self)] = True
+        setattr(request, HISTORYLINK_MIDDLEWARE_FLAG, True)
         history_link_context_manager.start()
 
     def _close_history_link_context(self, request):
         """Closes the history link context."""
-        if request.META.get((HISTORYLINK_MIDDLEWARE_FLAG, self), False):
-            del request.META[(HISTORYLINK_MIDDLEWARE_FLAG, self)]
+        if getattr(request, HISTORYLINK_MIDDLEWARE_FLAG, False):
+            setattr(request, HISTORYLINK_MIDDLEWARE_FLAG, False)
             history_link_context_manager.end()
 
     def process_response(self, request, response):
